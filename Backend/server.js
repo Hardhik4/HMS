@@ -14,29 +14,28 @@ app.use(
   }),
 );
 
-
-import pingRoutes from "./routes/ping";
+import pingRoutes from "./routes/ping.js";
 app.use("/ping", pingRoutes);
 
 //Auth routes
 
-import patientAuthRoutes from "./routes/auth/patient";
+import patientAuthRoutes from "./routes/auth/patient.js";
 app.use("/api/patients", patientAuthRoutes);
-import doctorAuthRoutes from "./routes/auth/doctor";
+import doctorAuthRoutes from "./routes/auth/doctor.js";
 app.use("/api/doctors", doctorAuthRoutes);
 
 //Appointment routes
 
-import appointmentRoutes from "./routes/appointments";
+import appointmentRoutes from "./routes/appointments.js";
 app.use("/api/appointments", appointmentRoutes);
 
 //Prescription routes
 
-import prescriptionRoutes from "./routes/prescription";
+import prescriptionRoutes from "./routes/prescription.js";
 app.use("/api/prescriptions", prescriptionRoutes);
 
 //Dashboard routes
-import dashboardRoutes from "./routes/dashboard";
+import dashboardRoutes from "./routes/dashboard.js";
 app.use("/api/dashboard", dashboardRoutes);
 
 //Start Server

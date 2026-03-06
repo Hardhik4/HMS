@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { authenticateToken } from "../../middleware/tokenAuthenticator";
-import { allowRoles } from "../../middleware/allowedRoles";
-import { authLimiter } from "../../middleware/authLimiter";
+import { authenticateToken } from "../../middleware/tokenAuthenticator.js";
+import { allowRoles } from "../../middleware/allowedRoles.js";
+import { authLimiter } from "../../middleware/authLimiter.js";
 import Joi from "joi";
 
 const LoginSchema = Joi.object({
