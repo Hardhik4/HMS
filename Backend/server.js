@@ -38,6 +38,10 @@ app.use("/api/prescriptions", prescriptionRoutes);
 import dashboardRoutes from "./routes/dashboard.js";
 app.use("/api/dashboard", dashboardRoutes);
 
+//Whoami routes
+import whoamiRoutes from "./routes/whoami.js";
+app.use("/api/whoami", whoamiRoutes);
+
 //Start Server
 app.listen(PORT, () => {
   console.log(`Server running on ${PORT}`);
