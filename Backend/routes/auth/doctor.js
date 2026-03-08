@@ -52,7 +52,10 @@ router.post("/register", authLimiter, async (req, res) => {
   const password = req.body.password;
   try {
     //example user [replace with db searching]
-    const user = { username: "admin", password: await bcrypt.hash("adminpass", 8) };
+    const user = {
+      username: "admin",
+      password: await bcrypt.hash("adminpass", 8),
+    };
 
     //if user already exists [change the if statement]
     if (user) {
