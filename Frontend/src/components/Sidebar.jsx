@@ -44,6 +44,7 @@ export default function Sidebar() {
           <span className="sidebar-item-icon">🚪</span>
           Logout
         </Link>
+
       </nav>
 
       {/* Footer */}

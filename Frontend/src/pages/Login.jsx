@@ -23,7 +23,7 @@ return(
 </div>
 
 
-<div className="role-card">
+<div className="role-card" onClick={() => navigate("/doctor-dashboard")}>
 
 <img src={doctorImg} />
 
