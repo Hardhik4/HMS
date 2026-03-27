@@ -1,6 +1,6 @@
 /* LOGIN PAGE */
 
-.login-container {
+.login-selector-container {
     text-align: center;
     margin-top: 100px;
 }
@@ -55,7 +55,7 @@
     justify-content: space-between;
     padding: 20px;
     background: #2b7cff;
-    color: white;
+    color: black;
 }
 
 .nav-links {
@@ -70,6 +70,8 @@
     padding: 0.7rem;
     border-radius: 6px;
     font-size: 1rem;
+    text-decoration: none;
+    color: white;
 }
 
 .nav-link:hover {

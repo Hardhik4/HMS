@@ -23,7 +23,7 @@ export default function Landing() {
                         Manage appointments, doctors, and patient records efficiently with our modern healthcare platform.
                     </p>
 
-                    <a href="/login">
+                    <a href="/loginselector">
                         <button className="btn">Get Started</button>
                     </a>
 

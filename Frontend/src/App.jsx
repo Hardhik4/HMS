@@ -1,23 +1,25 @@
 import { Routes, Route } from "react-router-dom"
 
 import Landing from "./pages/Landing"
-import Login from "./pages/Login"
+import LoginSelector from "./pages/LoginSelector"
 import PatientDashboard from "./pages/PatientDashboard"
 import DoctorDashboard from "./pages/DoctorDashboard"
+import Login from "./pages/Login"
 import "./App.css"
 
-function App(){
+function App() {
 
-return(
+    return (
 
-<Routes>
-<Route path="/" element={<Landing/>}/>
-<Route path="/login" element={<Login/>}/>
-<Route path="/dashboard" element={<PatientDashboard/>}/>
-<Route path="/doctor-dashboard" element={<DoctorDashboard/>}/>
-</Routes>
+        <Routes>
+            <Route path="/" element={<Landing />} />
+            <Route path="/loginselector" element={<LoginSelector />} />
+            <Route path="/patient-dashboard" element={<PatientDashboard />} />
+            <Route path="/doctor-dashboard" element={<DoctorDashboard />} />
+            <Route path="/login/:userType" element={<Login />} />
+        </Routes>
 
-)
+    )
 
 }
 

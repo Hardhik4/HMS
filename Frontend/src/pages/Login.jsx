@@ -1,40 +1,52 @@
+import { useState } from "react"
+import { Link } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import { useNavigate } from "react-router-dom"
-import patientImg from "../assets/patient.png"
-import doctorImg from "../assets/doctor.png"
+import "../styles/login.css"
 
-export default function Login(){
+export default function Login() {
+    const { userType } = useParams()
+    const navigate = useNavigate()
+    if (!userType) { userType = "patient" }
+    const [username, setUsername] = useState("")
+    const [password, setPassword] = useState("")
 
-const navigate = useNavigate()
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        console.log({ username, password });
+        console.log(userType)
+        navigate(`/${userType}-dashboard`)
+    }
 
-return(
+    return (
+        <div className="login-container">
+            <h2>Welcome {userType}</h2>
 
-<div className="login-container">
+            <form onSubmit={handleSubmit} className="login-form">
+                <input
+                    type="text"
+                    placeholder="Username"
+                    className="input-field"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    required
+                />
 
-<h1>Select Role</h1>
+                <input
+                    type="password"
+                    placeholder="Password"
+                    className="input-field"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                />
 
-<div className="role-box">
+                <button type="submit" className="btn">Login</button>
+            </form>
 
-<div className="role-card" onClick={() => navigate("/dashboard")}>
-
-<img src={patientImg} />
-
-<h3>Patient</h3>
-
-</div>
-
-
-<div className="role-card" onClick={() => navigate("/doctor-dashboard")}>
-
-<img src={doctorImg} />
-
-<h3>Doctor</h3>
-
-</div>
-
-</div>
-
-</div>
-
-)
-
+            <p>
+                Not registered? <Link to="/register">Go to Register</Link>
+            </p>
+        </div>
+    )
 }
