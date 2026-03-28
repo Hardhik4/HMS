@@ -17,7 +17,7 @@ const router = Router();
 
 router.post("/login", authLimiter, async (req, res) => {
   const { error } = LoginSchema.validate(req.body);
-  if (error) return res.status(400).json({ message: error.details[0].message });
+  if (error) return res.status(400).json({ message: "invalid request format" });
   /* login a patient */
   const username = req.body.username;
   const password = req.body.password;

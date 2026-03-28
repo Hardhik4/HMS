@@ -22,9 +22,9 @@ app.use("/ping", pingRoutes);
 //Auth routes
 
 import patientAuthRoutes from "./routes/auth/patient.js";
-app.use("/api/patients", patientAuthRoutes);
+app.use("/api/patient", patientAuthRoutes);
 import doctorAuthRoutes from "./routes/auth/doctor.js";
-app.use("/api/doctors", doctorAuthRoutes);
+app.use("/api/doctor", doctorAuthRoutes);
 
 //Appointment routes
 
