@@ -22,6 +22,7 @@ export default function DoctorDashboard() {
   })
 
   function validateUser() {
+    if (cookie == "") return;
     fetch("http://localhost:3000/api/whoami", {
       method: "GET",
       headers: {
