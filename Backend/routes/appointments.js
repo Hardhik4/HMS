@@ -34,12 +34,12 @@ router.post("/", authenticateToken, allowRoles("patient"), async (req, res) => {
 Get appointments for a specific patient
 */
 router.get(
-  "/patient/:id",
+  "/patient",
   authenticateToken,
   allowRoles("patient"),
   async (req, res) => {
     try {
-      const patientId = req.params.id;
+      const patientId = req.userId;
 
       const result = await pool.query(
         `SELECT * FROM appointments
@@ -59,12 +59,12 @@ router.get(
 Get appointments for a specific doctor
 */
 router.get(
-  "/doctor/:id",
+  "/doctor",
   authenticateToken,
   allowRoles("doctor"),
   async (req, res) => {
     try {
-      const doctorId = req.params.id;
+      const doctorId = req.userId;
 
       const result = await pool.query(
         `SELECT * FROM appointments

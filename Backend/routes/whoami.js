@@ -6,6 +6,7 @@ const router = Router();
 router.get("/", authenticateToken, (req, res) => {
   /* find the patient/doctor from the token and return data [username, role and userId] */
   /* if record not found, return invalid token */
+  res.json({ username: req.username, role: req.role });
 });
 
 export default router;
