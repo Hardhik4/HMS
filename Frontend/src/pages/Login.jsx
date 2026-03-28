@@ -6,17 +6,31 @@ import "../styles/login.css"
 import BackButton from "../components/BackButton"
 
 export default function Login() {
-    const { userType } = useParams()
-    const role = userType || "patient"
-    const navigate = useNavigate()
-    const [username, setUsername] = useState("")
-    const [password, setPassword] = useState("")
+    const { userType } = useParams();
+    const role = userType || "patient";
+    const navigate = useNavigate();
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        console.log({ username, password });
-        console.log(role)
-        navigate(`/${role}-dashboard`)
+        // navigate(`/${role}-dashboard`);
+        fetch(`http://localhost:3000/api/${role}/login`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                username: username.trim(),
+                password: password.trim()
+            })
+        })
+            .then(res => res.json())
+            .then((res) => {
+                if (res.message) console.log(res.message);
+                if (res.token) console.log(res.token);
+            })
+            .catch(e => console.error(e));
     }
 
     return (
