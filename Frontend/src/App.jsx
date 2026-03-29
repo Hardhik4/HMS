@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom"
 
+import Appointment from "./components/Appointment"
 import Landing from "./pages/Landing"
 import LoginSelector from "./pages/LoginSelector"
 import PatientDashboard from "./pages/PatientDashboard"
@@ -19,6 +20,7 @@ function App() {
             <Route path="/doctor-dashboard" element={<DoctorDashboard />} />
             <Route path="/login/:userType" element={<Login />} />
             <Route path="/register/:userType" element={<Register />} />
+            <Route path="/book" element={<Appointment/>}/>
         </Routes>
 
     )
