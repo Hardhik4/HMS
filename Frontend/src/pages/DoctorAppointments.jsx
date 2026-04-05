@@ -13,26 +13,26 @@ export default function DoctorAppointments() {
     var storedCookie = Cookies.get("token")
     if (!storedCookie) { navigate("/loginselector") }
     setCookie(storedCookie);
-    validateUser();
-    getAppointments();
+    if (storedCookie) {
+      validateUser(storedCookie);
+      getAppointments(storedCookie);
+    }
   }, [])
 
-  function validateUser() {
-    if (cookie == "") return;
+  function validateUser(token) {
     fetch("http://localhost:3000/api/whoami", {
       method: "GET",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${cookie}` }
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` }
     })
       .then(res => res.json())
       .then(res => { if (res.role != "doctor") navigate("/loginselector"); })
       .catch(() => navigate("/loginselector"));
   }
 
-  function getAppointments() {
-    if (cookie == "") return;
+  function getAppointments(token) {
     fetch("http://localhost:3000/api/appointments/doctor/me", {
       method: "GET",
-      headers: { Authorization: `Bearer ${cookie}` }
+      headers: { Authorization: `Bearer ${token}` }
     })
       .then(res => res.json())
       .then(res => { if (Array.isArray(res)) setAppointments(res); })
@@ -43,16 +43,15 @@ export default function DoctorAppointments() {
       method: "PUT",
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${cookie}` },
       body: JSON.stringify({ status: newStatus })
-    }).then(() => getAppointments())
+    }).then(() => getAppointments(cookie))
   }
 
   const filtered = filter === "All" ? appointments : appointments.filter(a => a.status === filter)
 
-  // Static fallback so page looks good even without backend
   const display = filtered.length > 0 ? filtered : [
-    { id: 1, patient_name: "Rahul Sharma", appointment_date: "2026-04-07", status: "Pending" },
-    { id: 2, patient_name: "Sneha Kapoor", appointment_date: "2026-04-07", status: "Approved" },
-    { id: 3, patient_name: "Mohan Rao",    appointment_date: "2026-04-08", status: "Completed" },
+    { id: 1, patient_name: "Rahul Sharma",  appointment_date: "2026-04-07", status: "Pending" },
+    { id: 2, patient_name: "Sneha Kapoor",  appointment_date: "2026-04-07", status: "Approved" },
+    { id: 3, patient_name: "Mohan Rao",     appointment_date: "2026-04-08", status: "Completed" },
   ]
 
   return (
@@ -67,27 +66,20 @@ export default function DoctorAppointments() {
           </div>
         </div>
 
-        {/* Filter Tabs */}
         <div style={{ display: "flex", gap: "10px", marginBottom: "8px" }}>
           {["All", "Pending", "Approved", "Completed"].map(f => (
-            <button
-              key={f}
-              onClick={() => setFilter(f)}
-              style={{
-                padding: "7px 18px",
-                borderRadius: "20px",
-                border: filter === f ? "none" : "1px solid #d1d5db",
-                background: filter === f ? "#1e3a8a" : "#fff",
-                color: filter === f ? "#fff" : "#374151",
-                fontWeight: filter === f ? "600" : "400",
-                cursor: "pointer",
-                fontSize: "13px"
-              }}
-            >{f}</button>
+            <button key={f} onClick={() => setFilter(f)} style={{
+              padding: "7px 18px", borderRadius: "20px",
+              border: filter === f ? "none" : "1px solid #d1d5db",
+              background: filter === f ? "#1e3a8a" : "#fff",
+              color: filter === f ? "#fff" : "#374151",
+              fontWeight: filter === f ? "600" : "400",
+              cursor: "pointer", fontSize: "13px"
+            }}>{f}</button>
           ))}
         </div>
 
-        <div className="dashboard-section-card">
+        <div className="dashboard-section-card" style={{ padding: 0, overflow: "hidden" }}>
           <table style={{ width: "100%", borderCollapse: "collapse" }}>
             <thead>
               <tr style={{ background: "#1e3a8a", color: "#fff" }}>
@@ -112,12 +104,8 @@ export default function DoctorAppointments() {
                     }}>{appt.status}</span>
                   </td>
                   <td style={td}>
-                    {appt.status === "Pending" && (
-                      <button style={actionBtn("#dcfce7", "#166534")} onClick={() => updateStatus(appt.id, "Approved")}>Approve</button>
-                    )}
-                    {appt.status === "Approved" && (
-                      <button style={actionBtn("#dbeafe", "#1e40af")} onClick={() => updateStatus(appt.id, "Completed")}>Mark Done</button>
-                    )}
+                    {appt.status === "Pending" && <button style={actionBtn("#dcfce7", "#166534")} onClick={() => updateStatus(appt.id, "Approved")}>Approve</button>}
+                    {appt.status === "Approved" && <button style={actionBtn("#dbeafe", "#1e40af")} onClick={() => updateStatus(appt.id, "Completed")}>Mark Done</button>}
                     {appt.status === "Completed" && <span style={{ color: "#9ca3af", fontSize: "13px" }}>—</span>}
                   </td>
                 </tr>
@@ -133,7 +121,4 @@ export default function DoctorAppointments() {
 
 const th = { padding: "12px 16px", textAlign: "left", fontSize: "13px", fontWeight: "600" }
 const td = { padding: "13px 16px", fontSize: "13px", borderBottom: "1px solid #f3f4f6" }
-const actionBtn = (bg, color) => ({
-  padding: "5px 14px", borderRadius: "6px", border: "none",
-  background: bg, color: color, fontWeight: "600", fontSize: "12px", cursor: "pointer"
-})
+const actionBtn = (bg, color) => ({ padding: "5px 14px", borderRadius: "6px", border: "none", background: bg, color: color, fontWeight: "600", fontSize: "12px", cursor: "pointer" })
