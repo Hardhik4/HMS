@@ -7,7 +7,7 @@ const JWT_SECRET = process.env.JWT_SECRET || "example";
 export function authenticateToken(req, res, next) {
   const authHeader = req.headers["authorization"];
   const token = authHeader?.split(" ")[1];
-  console.log(authHeader);
+  // console.log(authHeader);
   if (!token) return res.sendStatus(401);
 
   try {

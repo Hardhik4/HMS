@@ -13,7 +13,7 @@ export default function DoctorDashboard() {
   const [cookie, setCookie] = useState("");
   const [username, setUsername] = useState("")
 
-  useEffect(() => {
+  useEffect(()=>() => {
     var storedCookie = Cookies.get("token")
     setCookie(storedCookie);
     if (!storedCookie) { navigate("/loginselector") }

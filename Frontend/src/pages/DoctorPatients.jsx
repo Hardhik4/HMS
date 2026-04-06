@@ -10,8 +10,8 @@ export default function DoctorPatients() {
   useEffect(() => {
     var storedCookie = Cookies.get("token")
     if (!storedCookie) { navigate("/loginselector") }
-    else validateUser(storedCookie);
-  }, [])
+    validateUser(storedCookie);
+  })
 
   function validateUser(token) {
     fetch("http://localhost:3000/api/whoami", {

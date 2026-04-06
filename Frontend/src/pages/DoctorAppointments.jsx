@@ -30,7 +30,7 @@ export default function DoctorAppointments() {
   }
 
   function getAppointments(token) {
-    fetch("http://localhost:3000/api/appointments/doctor/me", {
+    fetch("http://localhost:3000/api/appointments/doctor", {
       method: "GET",
       headers: { Authorization: `Bearer ${token}` }
     })
