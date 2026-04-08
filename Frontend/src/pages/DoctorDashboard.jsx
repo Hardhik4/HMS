@@ -2,7 +2,7 @@ import Sidebar from "../components/Sidebar"
 import { useState, useEffect } from "react"
 import Cookies from "js-cookie"
 import { useNavigate } from "react-router-dom"
-import AppointmentItem from "../components/Appointment"
+import AppointmentItem from "../components/AppointmentItem"
 
 export default function DoctorDashboard() {
   const navigate = useNavigate();
@@ -13,7 +13,7 @@ export default function DoctorDashboard() {
   const [cookie, setCookie] = useState("");
   const [username, setUsername] = useState("")
 
-  useEffect(()=>() => {
+  useEffect(() => () => {
     var storedCookie = Cookies.get("token")
     setCookie(storedCookie);
     if (!storedCookie) { navigate("/loginselector") }
@@ -43,7 +43,7 @@ export default function DoctorDashboard() {
       method: "GET",
       headers: { Authorization: `Bearer ${cookie}` }
     })
-    .then(res=>{console.log(res);return res})
+      .then(res => { console.log(res); return res })
       .then(res => res.json())
       .then((res) => {
         setTodayAppointments(res.todayAppointments);
@@ -59,22 +59,22 @@ export default function DoctorDashboard() {
 
 
   const appointments = [
-  {
-    name: "Rahul Sharma",
-    time: "10:00 AM — General Checkup",
-    status: "pending"
-  },
-  {
-    name: "Sneha Kapoor",
-    time: "11:30 AM — Consultation",
-    status: "completed"
-  },
-  {
-    name: "Amit Verma",
-    time: "1:00 PM — Dental",
-    status: "pending"
-  }
-];
+    {
+      name: "Rahul Sharma",
+      time: "10:00 AM — General Checkup",
+      status: "pending"
+    },
+    {
+      name: "Sneha Kapoor",
+      time: "11:30 AM — Consultation",
+      status: "completed"
+    },
+    {
+      name: "Amit Verma",
+      time: "1:00 PM — Dental",
+      status: "pending"
+    }
+  ];
 
   return (
     <div className="dashboard-layout">
@@ -113,19 +113,19 @@ export default function DoctorDashboard() {
         </div>
 
 
-        
+
         {/* Doctor Appointment List */}
         <div className="dashboard-section-card">
 
           <h3 className="section-card-title">Today's Appointments</h3>
           {appointments.map((appt, index) => (
-  <AppointmentItem
-    key={index}
-    name={appt.name}
-    time={appt.time}
-    status={appt.status}
-  />
-))}
+            <AppointmentItem
+              key={index}
+              name={appt.name}
+              time={appt.time}
+              status={appt.status}
+            />
+          ))}
         </div>
 
       </main>
