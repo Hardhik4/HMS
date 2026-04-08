@@ -6,57 +6,50 @@ import { useNavigate } from "react-router-dom";
 export default function DoctorDashboard() {
   const navigate = useNavigate();
 
-  // values shown in cards
+  // stats
   const [todayAppointments, setTodayAppointments] = useState("--");
   const [patients, setPatients] = useState("--");
   const [prescriptions, setPrescriptions] = useState("--");
   const [pendingReports, setPendingReports] = useState("--");
 
-  // logged-in doctor name
   const [username, setUsername] = useState("");
 
-  // runs when page loads
+  // load data on start
   useEffect(() => {
     const token = Cookies.get("token");
 
-    // if user not logged in
     if (!token) {
-      navigate("/loginselector");
+      //navigate("/loginselector");
       return;
     }
 
-    // check user + load dashboard data
     validateUser(token);
     getStats(token);
   }, []);
 
-  // verify doctor
+  // check role
   function validateUser(token) {
     fetch("http://localhost:3000/api/whoami", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers: { Authorization: `Bearer ${token}` },
     })
-      .then((res) => res.json())
-      .then((res) => {
+      .then(res => res.json())
+      .then(res => {
         if (res.role !== "doctor") {
-          navigate("/loginselector");
+          //navigate("/loginselector");
         } else {
           setUsername(res.username);
         }
       })
-      .catch(() => navigate("/loginselector"));
+      //.catch(() => navigate("/loginselector"));
   }
 
-  // get stats from backend
+  // get dashboard data
   function getStats(token) {
     fetch("http://localhost:3000/api/dashboard/doctor", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers: { Authorization: `Bearer ${token}` },
     })
-      .then((res) => res.json())
-      .then((res) => {
+      .then(res => res.json())
+      .then(res => {
         setTodayAppointments(res.todayAppointments);
         setPatients(res.patients);
         setPrescriptions(res.prescriptions);
@@ -65,7 +58,7 @@ export default function DoctorDashboard() {
       .catch(() => console.log("error loading stats"));
   }
 
-  // date shown on top
+  // date
   const today = new Date().toLocaleDateString("en-US", {
     weekday: "long",
     year: "numeric",
@@ -73,7 +66,7 @@ export default function DoctorDashboard() {
     day: "numeric",
   });
 
-  // temporary appointment list
+  // dummy appointments
   const appointments = [
     { name: "Rahul Sharma", time: "10:00 AM — General Checkup", status: "pending" },
     { name: "Sneha Kapoor", time: "11:30 AM — Consultation", status: "completed" },
@@ -81,136 +74,113 @@ export default function DoctorDashboard() {
   ];
 
   return (
-    <div className="pd-layout">
+    <div className="dashboard-layout">
 
       {/* sidebar */}
       <Sidebar />
 
-      <div className="pd-main">
+      <div className="dashboard-main">
 
-        {/* topbar */}
-        <div className="pd-topbar">
-          <div className="pd-topbar-left">
-            <h2>Overview</h2>
-            <p>{today} · Hello Dr. {username}</p>
+        {/* top bar */}
+        <div className="dashboard-topbar">
+          <div>
+            <p className="dashboard-greeting">Welcome Dr. {username}</p>
+            <h1 className="dashboard-title">Doctor Dashboard</h1>
           </div>
+          <span className="dashboard-date">{today}</span>
         </div>
 
-        <div className="pd-content">
+        {/* stats */}
+        <div className="stats-grid">
 
-          {/* stats cards */}
-          <div className="pd-stats-grid">
-
-            <div className="pd-stat-card">
-              <div className="pd-stat-icon" style={{ background: "#e0f2fe" }}></div>
-              <div>
-                <div className="pd-stat-val">{todayAppointments}</div>
-                <div className="pd-stat-lbl">Today's Appointments</div>
-              </div>
-            </div>
-
-            <div className="pd-stat-card">
-              <div className="pd-stat-icon" style={{ background: "#dcfce7" }}></div>
-              <div>
-                <div className="pd-stat-val">{patients}</div>
-                <div className="pd-stat-lbl">Total Patients</div>
-              </div>
-            </div>
-
-            <div className="pd-stat-card">
-              <div className="pd-stat-icon" style={{ background: "#f3e8ff" }}></div>
-              <div>
-                <div className="pd-stat-val">{prescriptions}</div>
-                <div className="pd-stat-lbl">Prescriptions</div>
-              </div>
-            </div>
-
-            <div className="pd-stat-card">
-              <div className="pd-stat-icon" style={{ background: "#fef9c3" }}></div>
-              <div>
-                <div className="pd-stat-val">{pendingReports}</div>
-                <div className="pd-stat-lbl">Reports Pending</div>
-              </div>
-            </div>
-
+          <div className="stat-card blue">
+            <div className="stat-card-value">{todayAppointments}</div>
+            <div className="stat-card-label">Today's Appointments</div>
           </div>
 
-          {/* main section */}
-          <div className="pd-two-col">
+          <div className="stat-card green">
+            <div className="stat-card-value">{patients}</div>
+            <div className="stat-card-label">Total Patients</div>
+          </div>
 
-            {/* left side - appointments */}
-            <div>
-              <div className="pd-section-header">
-                <h3>Today's Appointments</h3>
-              </div>
+          <div className="stat-card purple">
+            <div className="stat-card-value">{prescriptions}</div>
+            <div className="stat-card-label">Prescriptions</div>
+          </div>
 
-              <div className="pd-appt-list">
-                {appointments.map((appt, index) => (
-                  <div key={index} className="pd-appt-card">
+          <div className="stat-card yellow">
+            <div className="stat-card-value">{pendingReports}</div>
+            <div className="stat-card-label">Reports Pending</div>
+          </div>
 
-                    {/* initials circle */}
-                    <div className="pd-doc-avatar">
-                      {appt.name.split(" ").map(n => n[0]).join("")}
-                    </div>
+        </div>
 
-                    {/* name + time */}
-                    <div className="pd-appt-info">
-                      <strong>{appt.name}</strong>
-                      <span>{appt.time}</span>
-                    </div>
+        {/* lower section */}
+        <div className="dashboard-lower">
 
-                    {/* status */}
-                    <div className="pd-appt-time">
-                      <span className={`pd-badge ${appt.status}`}>
-                        {appt.status}
-                      </span>
-                    </div>
+          {/* appointments */}
+          <div className="dashboard-section-card">
+            <h3 className="section-card-title">Today's Appointments</h3>
 
+            {appointments.length === 0 ? (
+              <p>No appointments today.</p>
+            ) : (
+              appointments.map((appt, index) => (
+                <div key={index} className="appointment-item">
+
+                  <div className="appt-info">
+                    <div className="appt-name">{appt.name}</div>
+                    <div className="appt-time">{appt.time}</div>
                   </div>
-                ))}
-              </div>
+
+                  <span className={`appt-badge ${appt.status}`}>
+                    {appt.status}
+                  </span>
+
+                </div>
+              ))
+            )}
+          </div>
+
+          {/* quick actions */}
+          <div className="dashboard-section-card">
+            <h3 className="section-card-title">Quick Actions</h3>
+
+            <div className="quick-action-grid">
+
+              <button
+                className="quick-action-btn"
+                onClick={() => navigate("/doctor-appointments")}
+              >
+                <div className="qa-label">View Appointments</div>
+              </button>
+
+              <button
+                className="quick-action-btn"
+                onClick={() => navigate("/doctor-patients")}
+              >
+                <div className="qa-label">My Patients</div>
+              </button>
+
+              <button
+                className="quick-action-btn"
+                onClick={() => navigate("/write-prescription")}
+              >
+                <div className="qa-label">Add Prescription</div>
+              </button>
+
+              <button
+                className="quick-action-btn"
+                onClick={() => navigate("/doctor-reports")}
+              >
+                <div className="qa-label">View Reports</div>
+              </button>
+
             </div>
-
-            {/* right side - quick actions */}
-            <div className="pd-vitals-card">
-              <h3>Quick Actions</h3>
-
-              <div className="quick-action-grid">
-
-                <button
-                  className="quick-action-btn"
-                  onClick={() => navigate("/doctor-appointments")}
-                >
-                  <div className="qa-label">View Appointments</div>
-                </button>
-
-                <button
-                  className="quick-action-btn"
-                  onClick={() => navigate("/doctor-patients")}
-                >
-                  <div className="qa-label">My Patients</div>
-                </button>
-
-                <button
-                  className="quick-action-btn"
-                  onClick={() => navigate("/write-prescription")}
-                >
-                  <div className="qa-label">Add Prescription</div>
-                </button>
-
-                <button
-                  className="quick-action-btn"
-                  onClick={() => navigate("/doctor-reports")}
-                >
-                  <div className="qa-label">View Reports</div>
-                </button>
-
-              </div>
-            </div>
-
           </div>
 
         </div>
+
       </div>
     </div>
   );
