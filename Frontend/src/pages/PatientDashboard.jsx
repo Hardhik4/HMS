@@ -604,9 +604,10 @@ useEffect(() => {
             {/* ════ APPOINTMENTS ════ */}
             {activeTab === "appointments" && (
               <>
+             
                 <div className="pd-section-header">
                   <h3>All Appointments</h3>
-                  <button className="pd-book-btn">
+                  <button onClick={() => navigate("/appointment")} className="pd-book-btn">
                     {Icon.plus} Book New Appointment
                   </button>
                 </div>
